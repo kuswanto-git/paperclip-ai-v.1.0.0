@@ -1,0 +1,20 @@
+{
+  "name": "@paperclipai/adapter-gemini-local",
+  "version": "0.1.0",
+  "description": "Paperclip adapter — Google Gemini CLI (local)",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./server": "./src/server/index.ts",
+    "./ui": "./src/ui/index.ts",
+    "./cli": "./src/cli/index.ts"
+  },
+  "dependencies": {
+    "@paperclipai/adapter-utils": "workspace:*",
+    "@paperclipai/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "catalog:"
+  }
+}
