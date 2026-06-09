@@ -1,22 +1,26 @@
 import type { ServerAdapterModule } from "./types.js";
+
 import {
   execute as claudeExecute,
   testEnvironment as claudeTestEnvironment,
   sessionCodec as claudeSessionCodec,
 } from "@paperclipai/adapter-claude-local/server";
 import { agentConfigurationDoc as claudeAgentConfigurationDoc, models as claudeModels } from "@paperclipai/adapter-claude-local";
+
 import {
   execute as codexExecute,
   testEnvironment as codexTestEnvironment,
   sessionCodec as codexSessionCodec,
 } from "@paperclipai/adapter-codex-local/server";
 import { agentConfigurationDoc as codexAgentConfigurationDoc, models as codexModels } from "@paperclipai/adapter-codex-local";
+
 import {
   execute as cursorExecute,
   testEnvironment as cursorTestEnvironment,
   sessionCodec as cursorSessionCodec,
 } from "@paperclipai/adapter-cursor-local/server";
 import { agentConfigurationDoc as cursorAgentConfigurationDoc, models as cursorModels } from "@paperclipai/adapter-cursor-local";
+
 import {
   execute as openCodeExecute,
   testEnvironment as openCodeTestEnvironment,
@@ -26,6 +30,7 @@ import {
 import {
   agentConfigurationDoc as openCodeAgentConfigurationDoc,
 } from "@paperclipai/adapter-opencode-local";
+
 import {
   execute as openclawGatewayExecute,
   testEnvironment as openclawGatewayTestEnvironment,
@@ -34,8 +39,22 @@ import {
   agentConfigurationDoc as openclawGatewayAgentConfigurationDoc,
   models as openclawGatewayModels,
 } from "@paperclipai/adapter-openclaw-gateway";
+
+// ─── GEMINI LOCAL (DITAMBAHKAN) ────────────────────────────────────────────────
+import {
+  execute as geminiExecute,
+  testEnvironment as geminiTestEnvironment,
+  sessionCodec as geminiSessionCodec,
+} from "@paperclipai/adapter-gemini-local/server";
+import {
+  agentConfigurationDoc as geminiAgentConfigurationDoc,
+  models as geminiModels,
+} from "@paperclipai/adapter-gemini-local";
+// ──────────────────────────────────────────────────────────────────────────────
+
 import { listCodexModels } from "./codex-models.js";
 import { listCursorModels } from "./cursor-models.js";
+
 import {
   execute as piExecute,
   testEnvironment as piTestEnvironment,
@@ -45,6 +64,7 @@ import {
 import {
   agentConfigurationDoc as piAgentConfigurationDoc,
 } from "@paperclipai/adapter-pi-local";
+
 import { processAdapter } from "./process/index.js";
 import { httpAdapter } from "./http/index.js";
 
@@ -111,6 +131,18 @@ const piLocalAdapter: ServerAdapterModule = {
   agentConfigurationDoc: piAgentConfigurationDoc,
 };
 
+// ─── GEMINI LOCAL ADAPTER OBJECT (DITAMBAHKAN) ────────────────────────────────
+const geminiLocalAdapter: ServerAdapterModule = {
+  type: "gemini_local",
+  execute: geminiExecute,
+  testEnvironment: geminiTestEnvironment,
+  sessionCodec: geminiSessionCodec,
+  models: geminiModels,
+  supportsLocalAgentJwt: true,
+  agentConfigurationDoc: geminiAgentConfigurationDoc,
+};
+// ──────────────────────────────────────────────────────────────────────────────
+
 const adaptersByType = new Map<string, ServerAdapterModule>(
   [
     claudeLocalAdapter,
@@ -119,6 +151,7 @@ const adaptersByType = new Map<string, ServerAdapterModule>(
     piLocalAdapter,
     cursorLocalAdapter,
     openclawGatewayAdapter,
+    geminiLocalAdapter,      // ← DITAMBAHKAN
     processAdapter,
     httpAdapter,
   ].map((a) => [a.type, a]),
@@ -136,10 +169,12 @@ export function getServerAdapter(type: string): ServerAdapterModule {
 export async function listAdapterModels(type: string): Promise<{ id: string; label: string }[]> {
   const adapter = adaptersByType.get(type);
   if (!adapter) return [];
+
   if (adapter.listModels) {
     const discovered = await adapter.listModels();
     if (discovered.length > 0) return discovered;
   }
+
   return adapter.models ?? [];
 }
 
