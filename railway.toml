@@ -6,3 +6,14 @@ healthcheckPath = "/api/health"
 healthcheckTimeout = 300
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 3
+
+# Environment variables wajib diset di Railway Dashboard → Variables:
+#
+# DATABASE_URL          = postgresql://user:pass@host:5432/paperclip
+# GEMINI_API_KEY        = AIza...   (dari https://aistudio.google.com/apikey)
+# ANTHROPIC_API_KEY     = sk-ant-...  (opsional, untuk claude-local adapter)
+# PAPERCLIP_JWT_SECRET  = random-string-panjang-minimal-32-karakter
+# PAPERCLIP_ADMIN_EMAIL = email-kamu@domain.com
+# PAPERCLIP_ADMIN_PASS  = password-admin-kamu
+#
+# JANGAN taruh secrets langsung di file ini — gunakan Railway Dashboard!
