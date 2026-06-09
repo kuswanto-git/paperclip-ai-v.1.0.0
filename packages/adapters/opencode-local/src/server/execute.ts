@@ -102,7 +102,9 @@ export async function execute(ctx: AdapterExecutionContext): Promise<AdapterExec
     "You are agent {{agent.id}} ({{agent.name}}). Continue your Paperclip work.",
   );
   const command = asString(config.command, "opencode");
-  const model = asString(config.model, "").trim();
+  const model = normalizeModel(
+  asString(config.model, "").trim()
+);
   const variant = asString(config.variant, "").trim();
 
   const workspaceContext = parseObject(context.paperclipWorkspace);
