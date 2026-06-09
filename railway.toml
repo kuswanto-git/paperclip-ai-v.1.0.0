@@ -6,6 +6,7 @@ healthcheckPath = "/api/health"
 healthcheckTimeout = 300
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 3
+startCommand = "tsx server/src/index.ts"
 
 # Environment variables wajib diset di Railway Dashboard → Variables:
 #
@@ -15,5 +16,10 @@ restartPolicyMaxRetries = 3
 # PAPERCLIP_JWT_SECRET  = random-string-panjang-minimal-32-karakter
 # PAPERCLIP_ADMIN_EMAIL = email-kamu@domain.com
 # PAPERCLIP_ADMIN_PASS  = password-admin-kamu
+#
+# Optional untuk Railway:
+# HOST                  = 0.0.0.0  (default)
+# PORT                  = 3100     (default)
+# PAPERCLIP_MIGRATION_AUTO_APPLY = true  (auto-apply DB migrations)
 #
 # JANGAN taruh secrets langsung di file ini — gunakan Railway Dashboard!
