@@ -97,7 +97,19 @@ function pruneExpiredDiscoveryCache(now: number) {
     if (value.expiresAt <= now) discoveryCache.delete(key);
   }
 }
+function normalizeModel(model: string): string {
+  const trimmed = model.trim();
 
+  if (trimmed.startsWith("google/")) {
+    return trimmed;
+  }
+
+  if (trimmed.startsWith("gemini-")) {
+    return `google/${trimmed}`;
+  }
+
+  return trimmed;
+}
 export async function discoverOpenCodeModels(input: {
   command?: unknown;
   cwd?: unknown;
