@@ -40,7 +40,19 @@ function parseModelProvider(model: string | null): string | null {
   if (!trimmed.includes("/")) return null;
   return trimmed.slice(0, trimmed.indexOf("/")).trim() || null;
 }
+function normalizeModel(model: string): string {
+  const trimmed = model.trim();
 
+  if (trimmed.startsWith("google/")) {
+    return trimmed;
+  }
+
+  if (trimmed.startsWith("gemini-")) {
+    return `google/${trimmed}`;
+  }
+
+  return trimmed;
+}
 function claudeSkillsHome(): string {
   return path.join(os.homedir(), ".claude", "skills");
 }
